@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlaceStore</title>
+    <link rel="icon" href="assets/Place-removebg-preview.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.12/leaflet-routing-machine.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.12/leaflet-routing-machine.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+    <!-- Modal para solicitar o e-mail -->
+    <div id="email-modal" class="modal">
+        <div class="modal-content">
+            <h2>Bem-vindo a PlaceStore</h2>
+            <p>Por favor, insira seu e-mail para continuar:</p>
+            <input type="email" id="user-email" placeholder="seu.email@example.com" />
+            <button id="submit-email">Continuar</button>
+            <p id="error-message" style="color: red; display: none;">Por favor, insira um e-mail válido.</p>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-container">
+            <h1>PlaceStore</h1>
+            <div id="user-info" style="display: none;">
+                <i id="user-icon" class="fa-solid fa-user" title="E-mail não inicializado"></i>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="map-container">
+            <div id="map"></div>
+        </section>
+        <section id="controls" class="responsive-controls">
+            <button id="locate-me"><i class="fa-solid fa-location-dot"></i></button>
+            <select id="place-type">
+                <option value="all">Todos</option>
+                <option value="farmacia">Farmácias</option>
+                <option value="supermercado">Supermercados</option>
+                <option value="mercado">Mercados</option>
+                <option value="cantina">Cantinas</option>
+            </select>
+            <input type="text" id="destination" placeholder="Digite o nome do local" />
+            <button id="find-route"><i class="fa-solid fa-route"></i></button>
+        </section>
+    </main>
+
+    <footer>
+        <p>Desenvolvido para TCC - Sistema de Mapeamento PlaceStore</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
