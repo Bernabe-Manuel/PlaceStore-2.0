@@ -1,5 +1,8 @@
 // script.js
 
+import { firestore } from "./js/firebase.js";
+import { addDoc, collection, getDocs, getDoc, doc,updateDoc } from 'https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js';
+
 // Inicializa o modal
 const emailModal = document.getElementById('email-modal');
 const userEmailInput = document.getElementById('user-email');
@@ -9,6 +12,94 @@ const userIcon = document.getElementById('user-icon');
 
 let userEmail = null;
 
+
+//criar email no firebase
+async function addEmail(email) {
+    try {
+
+        const colEmails = collection(firestore, 'emails');
+
+        const _doc = await addDoc(colEmails, {
+            email: email
+        })
+
+        console.log(_doc.id);
+    }
+    catch (e) {
+        console.log(e);
+    }
+}
+
+
+//pegar os emails
+async function getEmails() {
+    try {
+        const docs = await getDocs(collection(firestore, 'emails'));
+
+        const docsData = [];
+
+        for (let x = 0; x < docs.docs.length; x++) {
+            const docData = docs.docs[x].data();
+
+            docsData.push({
+                id: docs.docs[x].id,
+                email: docData.email
+            })
+
+        }
+
+        return docsData;
+
+    } catch (e) {
+        console.log(e);
+
+    }
+    return null;
+
+}
+
+//pegar os email
+async function getEmail(id) {
+    try {
+        const _doc = await getDoc(doc(collection(firestore, 'emails'), id));
+
+
+        const docData = _doc.data();
+
+        return {
+            id: _doc.id,
+            email: docData.email
+        };
+
+    } catch (e) {
+        console.log(e);
+
+    }
+    return null;
+
+
+}
+
+
+
+//Atualizar o email
+async function updateEmail(id, email) {
+    try {
+        const _doc = await updateDoc(doc(collection(firestore, 'emails'), id), {
+            email: email
+        });
+
+
+        console.log(_doc.id);
+
+    } catch (e) {
+        console.log(e);
+
+    }
+
+
+}
+
 // Função para validar o e-mail
 function validateEmail(email) {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -16,13 +107,17 @@ function validateEmail(email) {
 }
 
 // Evento para enviar o e-mail
-submitEmailButton.addEventListener('click', function () {
+submitEmailButton.addEventListener('click', async function () {
     const email = userEmailInput.value.trim();
     if (validateEmail(email)) {
         userEmail = email;
         emailModal.style.display = 'none'; // Esconde o modal
         userIcon.setAttribute('title', userEmail); // Define o e-mail como tooltip
         document.getElementById('user-info').style.display = 'block'; // Mostra o ícone
+
+        //adicionar este email ao firebase (firestore)
+        await addEmail(email)
+
         initializeMap(); // Inicializa o mapa após a validação
     } else {
         errorMessage.style.display = 'block'; // Mostra mensagem de erro
